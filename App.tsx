@@ -1,8 +1,16 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Share,
+  TouchableOpacity,
+} from 'react-native';
 import quotes from './assets/quotes.json';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import { Feather } from '@expo/vector-icons'; // 📦 Icônes
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -24,6 +32,16 @@ export default function App() {
 
   const dayIndex = getDayOfYear() % quotes.length;
   const quote = quotes[dayIndex];
+
+  const onShare = async () => {
+    try {
+      await Share.share({
+        message: `“${quote.text}” — ${quote.author} (via Daily Zen 🪷)`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const schedule = async () => {
@@ -59,6 +77,10 @@ export default function App() {
       <Text style={styles.title}>Daily Zen 🪷</Text>
       <Text style={styles.quote}>“{quote.text}”</Text>
       <Text style={styles.author}>– {quote.author}</Text>
+
+      <TouchableOpacity style={styles.shareButton} onPress={onShare}>
+        <Feather name="share-2" size={28} color="#333" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -79,14 +101,18 @@ const styles = StyleSheet.create({
   },
   quote: {
     fontSize: 22,
-    fontStyle: 'italic',
     color: '#333',
     textAlign: 'center',
     lineHeight: 32,
     marginBottom: 24,
   },
   author: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#444',
+  },
+  shareButton: {
+    marginTop: 30,
+    padding: 12,
+    borderRadius: 50,
   },
 });
