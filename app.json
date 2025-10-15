@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "daily-zen",
+    "name": "dailyzen",
     "slug": "daily-zen",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/dailyzen.png",
     "userInterfaceStyle": "light",
@@ -17,7 +17,8 @@
       "bundleIdentifier": "com.daijobuu.dailyzen",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "buildNumber": "16"
     },
     "android": {
       "adaptiveIcon": {

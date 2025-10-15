@@ -7,6 +7,7 @@ import { getDayOfYear, getQuoteForDay, Quote } from './constants/quotes';
 import zenColors from './constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TipForTheMonk from './app/TipForTheMonk.ios';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -20,6 +21,8 @@ Notifications.setNotificationHandler({
 
 export default function App() {
   const [currentQuote] = useState<Quote>(getTodayQuote());
+
+  const [tipOpen, setTipOpen] = useState(false);
 
   const onShare = async () => {
     try {
@@ -71,11 +74,8 @@ export default function App() {
           <Text style={styles.title}>dailyzen</Text>
 
           <View style={styles.card}>
-            <Text style={styles.quoteText}>
-              “Never let your sense of morals prevent you from doing what is
-              right.”
-            </Text>
-            <Text style={styles.authorText}>— Isaac Asimov</Text>
+            <Text style={styles.quoteText}>{currentQuote.text}</Text>
+            <Text style={styles.authorText}>— {currentQuote.author}</Text>
             <TouchableOpacity onPress={onShare}>
               <Feather
                 name="share"
@@ -86,6 +86,12 @@ export default function App() {
             </TouchableOpacity>
           </View>
         </View>
+
+        <TipForTheMonk
+          visible={tipOpen}
+          onClose={() => setTipOpen(false)}
+          zenColors={zenColors}
+        />
 
         <Text style={styles.footer}>Take a moment to breathe</Text>
       </SafeAreaView>
