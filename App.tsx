@@ -7,7 +7,6 @@ import { getDayOfYear, getQuoteForDay, Quote } from './constants/quotes';
 import zenColors from './constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TipForTheMonk from './app/TipForTheMonk.ios';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
