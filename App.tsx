@@ -85,13 +85,6 @@ export default function App() {
             </TouchableOpacity>
           </View>
         </View>
-
-        <TipForTheMonk
-          visible={tipOpen}
-          onClose={() => setTipOpen(false)}
-          zenColors={zenColors}
-        />
-
         <Text style={styles.footer}>Take a moment to breathe</Text>
       </SafeAreaView>
     </LinearGradient>
