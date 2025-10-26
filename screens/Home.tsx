@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Share, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
-import { Feather } from '@expo/vector-icons'; // 📦 Icônes
-import { getDayOfYear, getQuoteForDay, Quote } from './constants/quotes';
-import zenColors from './constants/colors';
+import { getDayOfYear, getQuoteForDay, QuoteWithId } from '../constants/quotes';
+import zenColors from '../constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFavoritesStore } from '../stores/favoritesStore';
+import SwipeLeft from '../components/SwipeLeft';
+import HeartToggle from '../components/HeartToggle';
+import PaywallModal from '../components/PaywallModal';
+import { useUIStore } from '../stores/uiStore';
+import { useActions } from '../stores/actionsStore';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -18,20 +23,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function App() {
-  const [currentQuote] = useState<Quote>(getTodayQuote());
+export default function Home() {
+  const [currentQuote] = useState<QuoteWithId>(getTodayQuote());
 
-  const [tipOpen, setTipOpen] = useState(false);
+  const showPaywall = useUIStore((s) => s.showPaywall);
+  const closePaywall = useUIStore((s) => s.closePaywall);
 
-  const onShare = async () => {
-    try {
-      await Share.share({
-        message: `“${currentQuote.text}” — ${currentQuote.author} (dailyzen 🪷)`,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const toggleFavorite = useActions((s) => s.toggleFavorite);
+  const isFav = useFavoritesStore((s) => s.has(currentQuote.id));
 
   useEffect(() => {
     const schedule = async () => {
@@ -71,21 +70,21 @@ export default function App() {
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         <View style={styles.content}>
           <Text style={styles.title}>dailyzen</Text>
+          <Text style={styles.quoteText}>{currentQuote.text}</Text>
+          <Text style={styles.authorText}>— {currentQuote.author}</Text>
 
-          <View style={styles.card}>
-            <Text style={styles.quoteText}>{currentQuote.text}</Text>
-            <Text style={styles.authorText}>— {currentQuote.author}</Text>
-            <TouchableOpacity onPress={onShare}>
-              <Feather
-                name="share"
-                size={22}
-                color={zenColors.deepPurple}
-                style={{ marginTop: 16, opacity: 0.7 }}
-              />
-            </TouchableOpacity>
-          </View>
+          <HeartToggle
+            isFavorite={isFav}
+            onToggle={() => {
+              toggleFavorite(currentQuote.id);
+            }}
+            size={22}
+            style={{ marginTop: 16, opacity: 0.9 }}
+          />
         </View>
+        <SwipeLeft />
         <Text style={styles.footer}>Take a moment to breathe</Text>
+        <PaywallModal visible={!!showPaywall} onClose={closePaywall} />
       </SafeAreaView>
     </LinearGradient>
   );

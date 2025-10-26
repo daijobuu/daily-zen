@@ -1,7 +1,10 @@
 export interface Quote {
+  id?: string;
   text: string;
   author: string;
 }
+
+export type QuoteWithId = Quote & { id: string };
 
 export const quotes: Quote[] = [
   {
@@ -1310,9 +1313,9 @@ export const quotes: Quote[] = [
   },
 ];
 
-export function getQuoteForDay(dayOfYear: number): Quote {
+export function getQuoteForDay(dayOfYear: number): QuoteWithId {
   const index = (dayOfYear - 1) % quotes.length;
-  return quotes[index];
+  return { ...quotes[index], id: String(index) };
 }
 
 export function getDayOfYear(): number {
