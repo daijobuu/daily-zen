@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "dailyzen",
-    "slug": "daily-zen",
+    "slug": "dailyzen",
     "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/dailyzen.png",

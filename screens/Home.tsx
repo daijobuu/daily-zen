@@ -68,6 +68,7 @@ export default function Home() {
       style={styles.gradient}
     >
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <Text style={styles.headerText}>Take a moment to breathe</Text>
         <View style={styles.content}>
           <Text style={styles.title}>dailyzen</Text>
           <Text style={styles.quoteText}>{currentQuote.text}</Text>
@@ -82,8 +83,8 @@ export default function Home() {
             style={{ marginTop: 16, opacity: 0.9 }}
           />
         </View>
+
         <SwipeLeft />
-        <Text style={styles.footer}>Take a moment to breathe</Text>
         <PaywallModal visible={!!showPaywall} onClose={closePaywall} />
       </SafeAreaView>
     </LinearGradient>
@@ -135,10 +136,10 @@ const styles = StyleSheet.create({
     color: zenColors.textLight,
     textAlign: 'center',
   },
-  footer: {
+  headerText: {
+    marginTop: 20,
     fontSize: 14,
     color: zenColors.textLight,
-    marginBottom: 30,
     letterSpacing: 0.5,
   },
 });
